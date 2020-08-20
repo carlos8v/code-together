@@ -5,12 +5,17 @@ Build a live server where anyone in anywhere in the world can join to code on th
 It's a test to see what we can build with the help of many people that don't know each other and have the same rights to write, erase, copy and paste.
 
 ### What runs underneaf?
-~Work in progress~
+Currently only the text is stored and sent directly to the iframe.
 
 ### Plans to run
-- [ ] HTML/CSS
+- [x] HTML/CSS
 - [ ] Javascript
 - [ ] Node
+
+### To do list
+- [ ] Make a room for webcoding
+- [ ] Adjust the layout
+- [ ] Manage to actually create web sockets for the fun of the project
 
 ### Inspirations/Tools
 - React-bash
