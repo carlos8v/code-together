@@ -2,12 +2,22 @@ const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
+const code = {
+    text: ''
+};
+
 app.get('/', (req, res) => {
     res.send({ ok : true });
 })
 
 io.on('connection', socket => {
-    console.log(`Conexão aberta com id: ${socket.id}`);
+        
+    socket.emit('newConection', code);
+
+    socket.on('codeChanged', newCodeText => {
+        code.text = newCodeText;
+        io.emit('codeChanged', code);
+    })
 })
 
 server.listen(4000, () => {
