@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import io from 'socket.io-client';
 import './App.css';
+
+const socket = io.connect('http://localhost:4000');
 
 function App() {
   const [codeText, setCodeText] = useState('');
