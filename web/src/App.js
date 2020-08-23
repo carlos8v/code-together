@@ -20,9 +20,18 @@ function App() {
   const editor = useMemo(() => withReact(createEditor()), [])
 
   function renderCode(newValue) {
-    document.querySelector("#canvas").contentWindow.document.querySelector('html').innerHTML = newValue[0].children[0].text;
+    let text = '';
+    newValue.forEach(p => {
+        text += p.children[0].text;
+        text += "<br>";
+    })
+    document.querySelector("#canvas").contentWindow.document.querySelector('html').innerHTML = text;
     setValue(newValue);
   }
+
+  socket.on('newConnection', () => {
+    document.querySelector("#canvas").contentWindow.document.querySelector('html').innerHTML = '<h1 style="font-weight: bold; color: #006c7c;">Code with the world :)</h1>'
+  })
 
   return (
     <div id="app">

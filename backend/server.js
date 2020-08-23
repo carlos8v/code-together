@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 
 io.on('connection', socket => {
         
-    socket.emit('newConnection', code);
+    socket.emit('newConnection');
 
     socket.on('change', newValue => {
         code.value = newValue;
