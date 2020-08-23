@@ -9,16 +9,17 @@ function App() {
 
   useEffect(() => {
     document.querySelector("#canvas").contentWindow.document.querySelector('html').innerHTML = codeText;
-    document.querySelector("#text-area").innerHTML = codeText;
-    
   }, [codeText])
 
   function updateCode(event) {
-    setCodeText(event.target.value);
-    socket.emit('codeChanged', event.target.value);
+    socket.emit('change', { text : event.target.value });
   }
 
-  socket.on('codeChanged', ({ text }) => {
+  socket.on('newConnection', ({ text }) => {
+    setCodeText(text);
+  })
+
+  socket.on('codeChanged', ({ text, id: connectionId }) => {
     setCodeText(text);
   })
 

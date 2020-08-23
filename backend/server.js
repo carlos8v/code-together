@@ -12,9 +12,9 @@ app.get('/', (req, res) => {
 
 io.on('connection', socket => {
         
-    socket.emit('newConection', code);
+    socket.emit('newConnection', code);
 
-    socket.on('codeChanged', newCodeText => {
+    socket.on('change', ({ text: newCodeText }) => {
         code.text = newCodeText;
         io.emit('codeChanged', code);
     })
