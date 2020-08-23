@@ -3,7 +3,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const code = {
-    text: ''
+    value: {},
 };
 
 app.get('/', (req, res) => {
@@ -14,9 +14,9 @@ io.on('connection', socket => {
         
     socket.emit('newConnection', code);
 
-    socket.on('change', ({ text: newCodeText }) => {
-        code.text = newCodeText;
-        io.emit('codeChanged', code);
+    socket.on('change', newValue => {
+        code.value = newValue;
+        io.emit('codeChanged', code.value);
     })
 })
 

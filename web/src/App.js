@@ -1,36 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import React, { useState, useMemo } from 'react';
+
 import './App.css';
+
+import { createEditor } from 'slate'
+import { Slate, Editable, withReact } from 'slate-react'
+
+import io from 'socket.io-client';
 
 const socket = io.connect('http://localhost:4000');
 
 function App() {
-  const [codeText, setCodeText] = useState('');
+  const [value, setValue] = useState([
+    {
+      type: 'paragraph',
+      children: [{ text: '<h1 style="font-weight: bold; color: #006c7c;">Code with the world :)</h1>' }],
+    },
+  ]);
 
-  useEffect(() => {
-    document.querySelector("#canvas").contentWindow.document.querySelector('html').innerHTML = codeText;
-  }, [codeText])
+  const editor = useMemo(() => withReact(createEditor()), [])
 
-  function updateCode(event) {
-    socket.emit('change', { text : event.target.value });
+  function renderCode(newValue) {
+    document.querySelector("#canvas").contentWindow.document.querySelector('html').innerHTML = newValue[0].children[0].text;
+    setValue(newValue);
   }
-
-  socket.on('newConnection', ({ text }) => {
-    setCodeText(text);
-  })
-
-  socket.on('codeChanged', ({ text, id: connectionId }) => {
-    setCodeText(text);
-  })
 
   return (
     <div id="app">
       <div id="wrapper">
-        <div id="text-container">
-          <span>code-together v1.0</span>
-          <textarea id="text-area" onChange={e => updateCode(e)} value={codeText}/>
-        </div>
-        <iframe title="Canvas" id="canvas"></iframe>
+        <Slate
+          editor={editor}
+          value={value}
+          onChange={newValue => renderCode(newValue)}
+        >
+          <Editable id="text-area" />
+        </Slate>
+        <iframe title="canvas" id="canvas" />
       </div>
     </div>
   );
